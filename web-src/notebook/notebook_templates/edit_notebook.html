@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+    <div class="container">
+        <br>
+        <h5 class="display-6">
+            Edit - {{ notebook.name }}
+        </h5>
+        <hr>
+        <br>
+        <form method="post" action="{% url 'edit_notebook' uid=notebook.id %}">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <p><button type="submit">Save Changes</button></p>
+        </form>
+    </div>
+
+{% endblock %}

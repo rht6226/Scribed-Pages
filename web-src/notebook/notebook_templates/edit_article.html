@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+    <div class="container">
+        <br>
+        <h5 class="display-6">
+            Edit {{ article.data }}
+        </h5>
+        <hr>
+        <br>
+        <form method="post" action="{% url 'new_notebook' %}">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <p><button type="submit">Submit</button></p>
+        </form>
+    </div>
+
+{% endblock %}

@@ -14,8 +14,8 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.utils.crypto import get_random_string
 from django.utils.html import strip_tags
 from django.utils.timezone import now
-from .models import NoteBook, User
-from .forms import NotebookCreationForm, NotebookChangeForm
+from .models import NoteBook, Article, User
+from .forms import NotebookCreationForm, NotebookChangeForm, ArticleCreationForm
 from django.contrib.auth.decorators import login_required
 
 import random
@@ -75,4 +75,39 @@ def create_notebook(request):
         return render(request, 'notebook_creation_form.html', context=context)
 
 
+@login_required
+def view_notebook(request, uid):
+    try:
+        notebook = get_object_or_404(NoteBook, id=uid, owner=request.user)
+    except Exception as e:
+        context = {'title': '404', 'messages': [e, 'OR, You do not own this notebook!']}
+
+    if request.method == 'POST':
+
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        try:
+            article = Article.objects.create(notebook=notebook, title=title, content=content)
+            print('Article - {} created'.format(content[:100]))
+
+            article.created_at = now()
+            article.save()
+            return redirect('view_notebook', uid=uid)
+
+        except Exception as e:
+            context = {'title': 'Error', 'messages': [e]}
+            return render(request, 'notebook.html', context=context)
+
+    else:
+        try:
+            articles = get_list_or_404(Article, notebook=notebook)
+        except:
+            articles = None
+
+        form = ArticleCreationForm()
+
+        context = {'title': notebook.name, 'notebook': notebook, 'articles': articles,
+                   'article_form': form} if articles is not None else {
+            'title': notebook.name, 'notebook': notebook, 'article_form': form}
+        return render(request, 'notebook.html', context=context)
 
