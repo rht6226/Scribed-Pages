@@ -24,3 +24,20 @@ class NoteBook(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Article(models.Model):
+    notebook = models.ForeignKey(NoteBook, on_delete=models.CASCADE)
+    index = models.PositiveSmallIntegerField(serialize=True, null=True)
+    title = models.CharField(null=True, max_length=200)
+    content = RichTextUploadingField(blank=True, null=True)
+    created_at = models.DateTimeField(null=True)
+    source = models.CharField(null=True, max_length=700)
+
+    class Meta:
+        db_table = 'articles'
+        verbose_name = 'Article'
+        verbose_name_plural = 'Articles'
+
+    def __str__(self):
+        return "{} - {}".format(self.notebook.name, self.index)

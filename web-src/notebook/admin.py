@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import NoteBook
+from .models import NoteBook, Article
 
 
 class NotebookAdmin(admin.ModelAdmin):
@@ -12,4 +12,14 @@ class NotebookAdmin(admin.ModelAdmin):
     filter_horizontal = ()
 
 
+class ArticleAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('info', {'fields': ['notebook', 'title', ]}),
+        ('content', {'fields': ['index', 'content', 'created_at', 'source']}),
+    ]
+    list_display = ('title', 'notebook', 'created_at')
+    filter_horizontal = ()
+
+
 admin.site.register(NoteBook, NotebookAdmin)
+admin.site.register(Article, ArticleAdmin)

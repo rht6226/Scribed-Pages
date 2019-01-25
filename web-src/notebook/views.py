@@ -16,6 +16,7 @@ from django.utils.html import strip_tags
 from django.utils.timezone import now
 from .models import NoteBook, User
 from .forms import NotebookCreationForm, NotebookChangeForm
+from django.contrib.auth.decorators import login_required
 
 import random
 
@@ -41,6 +42,7 @@ def create_notebook_id(size):
         create_notebook_id(size)  # If uid already exists recreate uid
 
 
+@login_required(login_url='/accounts/login/')
 def create_notebook(request):
 
     form = NotebookCreationForm()
@@ -71,4 +73,6 @@ def create_notebook(request):
     else:
         context = {'title': 'Create', 'form': form}
         return render(request, 'notebook_creation_form.html', context=context)
+
+
 
