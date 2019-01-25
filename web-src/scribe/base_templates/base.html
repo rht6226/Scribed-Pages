@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        {% include 'base_meta.html' %}
+        <title>{{ title }} | Notebook</title>
+        {% include 'base_css.html' %}
+
+        {% block custom_css %}
+            {% comment %} Use this Block to load custom stylin of each page {% endcomment %}
+        {% endblock %}
+    </head>
+
+    <body>
+
+        {% comment %} NAVBAR {% endcomment %}
+        {% include 'nav.html' %}
+
+        {% comment %} MESSAGES {% endcomment %}
+        {% include 'messages.html' %}
+
+        {% block body %}
+            {% comment %} This Block will contain the page body. {% endcomment %}
+        {% endblock %}
+        {% comment %}SCRIPTS{% endcomment %}
+        {% include 'base_script.html' %}
+
+        {% block custom_script %}
+            {% comment %} Use this block to load custom JavaScript for each of the pages {% endcomment %}
+        {% endblock %}
+    </body>
+
+</html>
