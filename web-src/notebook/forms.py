@@ -1,5 +1,5 @@
 from django import forms
-from .models import NoteBook, Article
+from .models import NoteBook
 from ckeditor.widgets import CKEditorWidget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 

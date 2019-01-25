@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="container">
+    {% if user.is_authenticated %}
+        <br>
+        <div class="row">
+        <div class="col-10">
+            <h1 class="display-3">{{ notebook.name }}</h1>
+        </div>
+{#        <div class="col-2 grey-text">#}
+{#            <a href="" class="btn btn-outline-success" data-toggle="modal" data-target="#article_creation"> <i class="fa fa-plus display-3"></i></a>#}
+{#        </div>#}
+        </div>
+        <br><hr><br>
+
+            <p class="display-1"> <b>Author</b> - {{ notebook.owner.get_full_name }}</p>
+        <br><br>
+        <div class="container">
+            {{ notebook.description | safe }}
+        </div>
+
+
+        <div class="container">
+            {% if articles %}
+                <br>
+              <ul class="messages">
+                {% for article in articles %}
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h3>{{ article.title | safe }}</h3>
+                    <strong>{{ article.content | safe}}</strong>
+                   </div>
+                {% endfor %}
+              </ul>
+            {% endif %}
+        </div>
+{#        {% include 'article_creation_form.html' %}#}
+</div>
+
+    {% endif %}
+    </div>
+{% endblock %}
