@@ -1,0 +1,179 @@
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,900" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .select-box {
+  cursor: pointer;
+  position : relative;
+  max-width:  20em;
+  width: 100%;
+}
+
+.select,
+.label {
+  color: #414141;
+  display: block;
+  font: 400 17px/2em 'Source Sans Pro', sans-serif;
+}
+
+.select {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  padding: 5px 0;
+  height: 40px;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  background: none transparent;
+  border: 0 none;
+}
+.select-box1 {
+  background: #ececec;
+}
+
+.label {
+  position: relative;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+        .popup{
+    height: 525px;
+    width: 320px;
+    top: 0;
+    right: 0;
+    background-color: #a5f7ab;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    transition: 0.5s;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.25);
+    opacity: 1;
+}
+.title {
+    width: 100%;
+    height: 40px;
+    background-color: white;
+    padding: 0px;
+    border-spacing: 0px;
+}
+        .textarea {
+    width: 100%;
+    height: 90%;
+    overflow: auto;
+}
+        .Content {
+    font-size: 15px;
+    font-family: Charter;
+    width: 320px;
+    margin: 0 auto;
+    color: black;
+    top: 50px;
+    padding: 0px 15px;
+    height: 420px;
+    text-align: left;
+    line-height: 2em;
+    word-break: break-word;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    top: 50px;
+    bottom: 90px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+        table {
+    white-space: normal;
+    line-height: normal;
+    font-weight: normal;
+    font-size: medium;
+    font-style: normal;
+    color: -internal-quirk-inherit;
+    text-align: start;
+    font-variant: normal;
+}
+
+        .titleText {
+    border: none;
+    width: 100%;
+    font-size: 17px;
+    padding-left: 5px;
+    font-family: "Source Sans Pro";
+    background-color: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-font-smoothing: auto;
+    font-weight: 600;
+}
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div>
+<div id="beforelogin" style="width:170px; text-align: center;background:#333 url(https://static.tumblr.com/maopbtg/a5emgtoju/inflicted.png)">
+     <h2 style="text-align: center;	font-family:'Source Sans Pro'
+	font-weight:normal;
+	font-size:24px; color: #41f4e8" >Click Here to Login!</h2>
+       <button id="login" >LogIn</button>
+
+</div>
+<div id="afterlogin" style="">
+    <div class="popup" >
+
+		<table class="title"  cellpadding="0" style="background-color: rgba(255, 255, 255, 0.8);">
+	        <tbody>
+            <tr>
+                <td id="close" style="padding-left:10px;cursor:pointer;">
+                    <img src="images/close.png" style="max-width: 24px; display: block;" class="">
+                </td>
+	            <td style="text-align:center">
+	                <input id="title" type="text" placeholder="Title" class="titleText" style="text-align:center;" autocomplete="off">
+	            </td>
+	            <td id="save" style="width:10%;padding-right:10px;" align="left">
+                    <img id="saveButton" src="images/checked.png" style="max-width: 24px; cursor: pointer;" class="">
+	            </td>
+	        </tr>
+	    </tbody>
+
+        </table>
+		<div id="contentHolder" class="textarea" style="background-color: rgba(255, 255, 255, 0.8);bottom:0">
+
+	        <div contenteditable="true" id="text" class="Content" style="width: 320px; color: black; height:470px; text-align: left;	background-image:url(images/Notebook_ruled.png);"></div>
+
+	    </div>
+
+
+
+		<table class="title"  cellpadding="0" style="background-color: rgba(255, 255, 255, 0.8);">
+	        <tbody>
+            <tr>
+           <td>
+
+<div class="select-box">
+
+    <label class="label select-box1"><span class="label-desc">Choose your Notebook</span>
+        <img src="images/downarrow.png" id="downarrow" style="max-width: 12px; vertical-align: middle; cursor: pointer;float:right; padding-top: 8px;" class=""></label>
+    <select id="names" class="select">
+        <option value="">SELECT</option>
+    </select>
+
+  </div>
+	            </td>
+	        </tr>
+	    </tbody>
+
+        </table>
+
+
+    </div>
+</div>
+</div>
+
+ <script src="js/jquery-3.3.1.min.js"></script>
+ <script src="myScript.js"></script>
+
+</body>
+</html>
