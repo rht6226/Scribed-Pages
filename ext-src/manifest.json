@@ -1,0 +1,45 @@
+{
+  "name":"NoteItDown",
+  "description":"Clip The Text",
+  "version":"1.0",
+  "manifest_version":2,
+
+   "browser_action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16":"images/notebook16.png",
+        "32":"images/notebook32.png",
+        "64":"images/notebook64.png",
+        "128":"images/notebook128.png"
+      }
+    },
+  "icons":{
+     "16":"images/notebook16.png",
+        "32":"images/notebook32.png",
+        "64":"images/notebook64.png",
+        "128":"images/notebook128.png"
+  },
+  "background":{
+    "scripts":["js/background.js"],
+    "persistent":true
+
+  },
+  "content_scripts":[
+    {
+      "matches":["http://*/*","https://*/*"],
+      "js":["js/myscripts.js"]
+    }
+  ],
+
+   "permissions":[
+     "tabs",
+     "activeTab",
+     "cookies",
+     "http://*/*",
+     "https://*/*",
+     "<all_urls>",
+     "http://127.0.0.1/*"
+   ]
+
+
+}
