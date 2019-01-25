@@ -138,7 +138,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'notebook', 'assets')
+    os.path.join(BASE_DIR, 'scribe', 'assets')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 STATIC_URL = '/static/'
