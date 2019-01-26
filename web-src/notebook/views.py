@@ -20,7 +20,33 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
 import random
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="../scribe-fdf862bebb2f.json"
 
+def text2speech(text):
+    """Synthesizes speech from the input string of text."""
+    from google.cloud import texttospeech
+    client = texttospeech.TextToSpeechClient()
+
+    input_text = texttospeech.types.SynthesisInput(text=text)
+
+    # Note: the voice can also be specified by name.
+    # Names of voices can be retrieved with client.list_voices().
+    voice = texttospeech.types.VoiceSelectionParams(
+        language_code='en-US',
+        ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
+
+    audio_config = texttospeech.types.AudioConfig(
+        audio_encoding=texttospeech.enums.AudioEncoding.MP3)
+
+    response = client.synthesize_speech(input_text, voice, audio_config)
+
+    # instead return the encoded audio_content to decode and play in Javascript
+    return response.audio_content
+
+def getAudio(request):
+    test_audio = text2speech("Hello hackers")
+    return render(request,'index.html',{'audio_content':test_audio})
 
 def getlist(request, uid):
     id = []
@@ -91,7 +117,6 @@ def create_notebook(request):
     else:
         context = {'title': 'Create', 'form': form}
         return render(request, 'notebook_creation_form.html', context=context)
-
 
 
 @csrf_exempt
