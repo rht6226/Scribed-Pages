@@ -31,8 +31,9 @@ def login_user(request):
         if user is not None:
             print('User found')
             login(request, user)
-            return redirect('home')
-
+            response = redirect('home')
+            response.set_cookie('uid',username,max_age=30*3600)
+            return response
         else:
             print('Non existing user')
             messages.error(request, 'oops! username or password does not exists!')
@@ -47,6 +48,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     response = redirect('home')
+    response.delete_cookie('uid')
     return response
 
 
