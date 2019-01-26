@@ -23,7 +23,7 @@
             <!-- Section: Edit Account -->
             <section class="section">
                 <!-- First row -->
-                <div class="row">
+                <div class="row h-75">
                     <!-- First column -->
                     <div class="col-lg-4 mb-4">
 
@@ -39,7 +39,7 @@
                             <!-- Card content -->
                             <div class="card-body card-body-cascade text-center">
                                 <img src="{{ user.profile_image.url }}" alt="User Photo" class="img img-fluid img-thumbnail z-depth-1 mb-3 mx-auto" onclick="document.getElementById('my_file').click()">
-                                 <p class="text-muted"><small>Click Image to upload photo</small></p><br>
+                                 <p class="text-muted"><small>Click Image to upload photo</small></p>
                                 <div class="row flex-center">
                                     <form method="post" enctype="multipart/form-data" action="{% url 'edit_profile' %}">
                                         {% csrf_token %}

@@ -21,7 +21,8 @@ from django.http import JsonResponse
 
 import random
 import os
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="../scribe-fdf862bebb2f.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../scribe-fdf862bebb2f.json"
+
 
 def text2speech(text):
     """Synthesizes speech from the input string of text."""
@@ -44,9 +45,11 @@ def text2speech(text):
     # instead return the encoded audio_content to decode and play in Javascript
     return response.audio_content
 
+
 def getAudio(request):
     test_audio = text2speech("Hello hackers")
-    return render(request,'index.html',{'audio_content':test_audio})
+    return render(request, 'index.html', {'audio_content': test_audio})
+
 
 def getlist(request, uid):
     id = []
@@ -69,7 +72,10 @@ def getlist(request, uid):
 def home(request):
     context = {'title': 'Home'}
     print(context)
-    return render(request, 'index.html', context=context)
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    else:
+        return render(request, 'index.html', context=context)
 
 
 def create_notebook_id(size):
@@ -106,16 +112,17 @@ def create_notebook(request):
             print('Notebook - {} created'.format(name))
             book.created_at = book.updated_at = now()
             book.save()
-            context = {'title': 'Create', 'messages': ['Notebook created successfully'], 'form': form}
+            context = {'title': 'Create', 'messages': ['Notebook created successfully'], 'form': form,
+                       "create_page": "active"}
             return render(request, 'notebook_creation_form.html', context=context)
 
         except Exception as e:
             print(e)
-            context = {'title': 'Create', 'messages': [e], 'form': form}
+            context = {'title': 'Create', 'messages': [e], 'form': form, "create_page": "active"}
             return render(request, 'notebook_creation_form.html', context=context)
 
     else:
-        context = {'title': 'Create', 'form': form}
+        context = {'title': 'Create', 'form': form, "create_page": "active"}
         return render(request, 'notebook_creation_form.html', context=context)
 
 
@@ -131,8 +138,9 @@ def view_notebook(request, uid):
             article = Article.objects.create(notebook=notebook, title=title, content=content)
             # print('Article - {} created'.format(content[:100]))
 
-            article.created_at = now()
+            article.created_at = notebook.updated_at = now()
             article.save()
+            notebook.save()
             return redirect('view_notebook', uid=uid)
 
         except Exception as e:
