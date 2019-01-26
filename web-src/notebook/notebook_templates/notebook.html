@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{%  load static %}
 {% block body %}
     <div class="container">
         {% include 'article_creation.html' %}
@@ -33,8 +33,13 @@
                   <div class="card">
                           <div class="card-header display-5">
                             {{ article.title }}
+
+                                  <audio name="{{ article.id }}" preload= 'auto' controls  type="audio/mpeg"  src="{% static 'speech.mp3' %}"  ></audio>
+
+
+                                           <button  id='playfile' value = 'Play' name="{{ article.id }}" >Play</button>
                           </div>
-                          <div class="card-body">
+                          <div class="card-body" style="background-color:#41f4bb" name="{{ article.id }}">
                             {{ article.content | safe }}
                           </div>
                           <div class="card-footer text-muted">
@@ -57,4 +62,53 @@
 
     {% endif %}
     </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+    <script>
+
+function submit(text,id){
+alert(text);
+var playBtn = $("button[name="+id+"]");
+var audioBtn = $("audio[name="+id+"]");
+$.ajax({
+    url: "{% url 'getAudio' %}",
+    type: "post",
+    data: {
+        text : text,
+
+    },
+   beforeSend:function(){
+     playBtn.html("Wait...");
+   },
+    success: function(){
+    playBtn.html("Playing");
+            {% load static %}
+    audioBtn.src = "{% static 'speech.mp3' %}";
+    audioBtn[0].play();
+
+    },
+    error:function(){
+        alert("Error occured");
+    }
+});
+
+}
+
+    </script>
+
+    <script>
+                {% for article in articles %}
+    $('button[name ="{{ article.id }}"]').click(function(event){
+        event.preventDefault();
+        console.log("submitted!")
+        var text = $('div[name ="{{ article.id }}"]').html()
+        submit(text,{{ article.id }});
+    });
+    {% endfor %}
+    </script>
+
 {% endblock %}
