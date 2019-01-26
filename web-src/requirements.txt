@@ -8,4 +8,4 @@ google-cloud-texttospeech
 gTTS
 sox
 google_speech
-
+WeasyPrint
