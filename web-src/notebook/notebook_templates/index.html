@@ -3,12 +3,24 @@
 
 
 {% block body %}
-    <br><br>
-    <h1 class="display-5 text-center">Welcome to the Notebook</h1>
-<p>If you click on me, I will disappear.</p>
-<p>Click me away!</p>
-<p>Click me too!</p>
-    <button  id='playfile' value = 'Play' >Play</button>
+    <div class="card card-image img-fluid" style="background-image: url(https://res.cloudinary.com/dz2bsme0a/image/upload/v1548540825/new-jumbotron-background.png);">
+  <div class="text-white text-center py-5 px-4 my-5">
+    <div>
+      <h2 class="card-title h1-responsive pt-3 mb-5 font-bold"><strong>Welcome to the Scribed-Pages </strong></h2>
+      <p class="mx-5 mb-5">Trouble keeping track of all the articles you read on the web? We've got you covered. Read all the articles you want and save the important
+          points into a notebook for future references using our chrome extension. You can visit them online later on our website. Want to edit them? Create New Notes? We've got you.
+      </p>
+        <p>So ? What are Yuo gus waiting for? Just Download the extension, Register and start Scribbling ...</p>
+      <a class="btn btn-outline-white btn-md" href="http://www.github.com/Legion-Initiative/Scribed-Pages.git"><i class="fa fa-clone left"></i> Get Extension </a>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block custom_script %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
 
@@ -17,7 +29,5 @@ $(document).ready(function(){
     $(this).hide();
   });
 });
-
-
     </script>
-{% endblock %}
+        {% endblock %}
