@@ -16,7 +16,11 @@ from .forms import NotebookCreationForm, NotebookChangeForm, ArticleCreationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
+from django.template import loader, RequestContext
 
+from weasyprint import HTML
 import random
 import os
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../scribe-fdf862bebb2f.json"
@@ -258,4 +262,11 @@ def edit_article(request, uid):
     return render(request, 'edit_article.html', context={'title': article.title, 'article': article, 'form': form,
                                                          'messages': error})
 
-
+def html_to_pdf_view(request, uid):
+    notebook = get_object_or_404(NoteBook, id=uid)
+    articles = get_list_or_404(Article, notebook=notebook)
+    template = loader.get_template('pdf_template.html')
+    html = template.render({'notebook': notebook, 'articles': articles}, request)
+    response = HttpResponse(content_type='application/pdf')
+    HTML(string=html).write_pdf(response)
+    return response

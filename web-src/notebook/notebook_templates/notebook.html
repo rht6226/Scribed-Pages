@@ -8,11 +8,14 @@
     {% if user.is_authenticated %}
         <br>
         <div class="row">
-        <div class="col-9">
+        <div class="col-8">
             <h1 class="display-3">{{ notebook.name }}</h1>
         </div>
-        <div class="col-3 grey-text">
-            <a href="" class="btn btn-lg btn-outline-success" data-toggle="collapse" data-target="#collapse"> <i class="fa fa-plus display-3"> Add Article</i></a>
+        <div class="col-2 grey-text">
+            <a href="" class="btn btn-sm btn-outline-success" data-toggle="collapse" data-target="#collapse"> <i class="fa fa-plus display-3"> Add Article</i></a>
+        </div>
+        <div class="col-2 grey-text">
+            <a href="{% url 'pdf' uid=notebook.id %}" class="btn btn-sm btn-outline-danger" > <i class="fa fa-download"></i> Export</a>
         </div>
         </div>
         <br><hr><br>

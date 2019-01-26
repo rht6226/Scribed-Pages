@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ notebook.name }}</title>
+    {% include 'base_css.html' %}
+</head>
+<body>
+    <div class="container-fluid">
+        <br>
+        <div class="row">
+        <div class="col-9">
+            <h1 class="display-4">{{ notebook.name }}</h1>
+        </div>
+        </div>
+        <br><hr><br>
+            <p class="display-5"> <b>Author</b> - {{ notebook.owner.get_full_name }}</p>
+        <br><br>
+        <div class="container">
+            {{ notebook.description | safe }}
+        </div>
+
+        <div class="container-fluid">
+            {% if articles %}
+                {% for article in articles %}
+                    <br>
+                  <div class="card">
+                          <div class="display-5">
+                              <div class="row">
+                                <div class="col-4" style="font-weight: bolder; color: #0000ee;">{{ article.title }}</div>
+                              </div>
+                          </div>
+                          <div class="card-body" style="background-color:#41f4bb" name="{{ article.id }}">
+                            {{ article.content | safe }}
+                          </div>
+                    </div>
+                    <br>
+                {% endfor %}
+            {% endif %}
+        </div>
+</div>
+</body>
+</html>
