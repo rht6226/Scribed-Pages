@@ -1,11 +1,9 @@
 """
-
 home -
     The function to render the homepage of the website.
     If User is logged in it will show Username and if not then the option for Login/Signup.
     The logged in logi is inside templates/nav.html
     This page will also be used for providing information to the user and helping them in installing the extension.
-
 Written_by - Rohit Anand
 """
 
@@ -46,9 +44,9 @@ def text2speech(text):
     return response.audio_content
 
 
-<<<<<<< HEAD
-
->>>>>>> 88841740587ea2fab8d0b76afa23aa290fbc8fc6
+def getAudio(request):
+    test_audio = text2speech("Hello hackers")
+    return render(request, 'index.html', {'audio_content': test_audio})
 
 
 def getlist(request, uid):

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{%  load static %}
+
 {% block body %}
     <div class="container">
         {% include 'article_creation.html' %}
@@ -26,24 +26,6 @@
 
         <div class="container-fluid">
             {% if articles %}
-<<<<<<< HEAD
-                <br>
-              <ul class="messages">
-
-                {% for article in articles %}
-
-
-
-
-
-                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <h3>{{ article.title | safe }}</h3>
-                    <strong name="{{ article.id }}">{{ article.content | safe}}</strong>
-                   </div>
-                {% endfor %}
-
-              </ul>
-=======
                 {% for article in articles %}
 
                     <div>&nbsp;</div>
@@ -69,13 +51,10 @@
 
                     <div>&nbsp;</div>
                 {% endfor %}
->>>>>>> 88841740587ea2fab8d0b76afa23aa290fbc8fc6
             {% endif %}
-
         </div>
 </div>
 
     {% endif %}
     </div>
-
 {% endblock %}
