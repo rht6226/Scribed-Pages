@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{%  load static %}
 {% block body %}
     <div class="container">
     {% if user.is_authenticated %}
@@ -25,18 +25,74 @@
             {% if articles %}
                 <br>
               <ul class="messages">
+
                 {% for article in articles %}
+
+
+    <audio name="{{ article.id }}" preload= 'auto' controls  type="audio/mpeg"  src="{% static 'speech.mp3' %}"  ></audio>
+
+
+    <button  id='playfile' value = 'Play' name="{{ article.id }}" >Play</button>
+
+
                   <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <h3>{{ article.title | safe }}</h3>
-                    <strong>{{ article.content | safe}}</strong>
+                    <strong name="{{ article.id }}">{{ article.content | safe}}</strong>
                    </div>
                 {% endfor %}
+
               </ul>
             {% endif %}
+
         </div>
         {% include 'article_creation.html' %}
 </div>
 
     {% endif %}
     </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+    <script>
+
+function submit(text,id){
+
+var playBtn = $("button[name="+id+"]");
+var audioBtn = $("audio[name="+id+"]");
+$.ajax({
+    url: "{% url 'getAudio' %}",
+    type: "post",
+    data: {
+        text : text,
+
+    },
+   beforeSend:function(){
+     playBtn.html("Wait...");
+   },
+    success: function(){
+    playBtn.html("Playing");
+            {% load static %}
+    audioBtn.src = "{% static 'speech.mp3' %}";
+    audioBtn[0].play();
+
+    },
+    error:function(){
+        alert("Error occured");
+    }
+});
+
+}
+
+    </script>
+    <script>
+                {% for article in articles %}
+    $('button[name ="{{ article.id }}"]').click(function(event){
+        event.preventDefault();
+        console.log("submitted!")
+        var text = $('strong[name ="{{ article.id }}"]').html()
+        submit(text,{{ article.id }});
+    });
+    {% endfor %}
+    </script>
+
 {% endblock %}
