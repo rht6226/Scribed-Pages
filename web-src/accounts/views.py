@@ -131,11 +131,10 @@ def dashboard(request):
 
         try:
             notes = get_list_or_404(NoteBook, owner=user)
-            context = {'title': 'Dashboard', 'notebooks': notes, 'user': user}
-
+            context = {'title': 'Dashboard', 'notebooks': notes, 'user': user, "home_page": "active"}
         except:
             context = {'title': 'Dashboard', 'notebooks': None, 'user': user,
-                       'error': 'You Do not have any notebooks! Create one'}
+                       'error': 'You Do not have any notebooks! Create one', "home_page": "active"}
 
         return render(request, 'dashboard.html', context=context)
 
@@ -144,7 +143,7 @@ def dashboard(request):
 def edit_profile(request):
     user = request.user
     user_instance = User.objects.get(username=user.username)
-    context = {'title': 'Edit Profile', 'user': user_instance}
+    context = {'title': 'Edit Profile', 'user': user_instance, "edit_page": "active"}
 
     if request.method == 'POST':
 

@@ -2,37 +2,38 @@
 {%  load static %}
 {% block body %}
     <div class="container">
+        {% include 'article_creation.html' %}
+    </div>
+    <div class="container">
     {% if user.is_authenticated %}
         <br>
         <div class="row">
-        <div class="col-10">
+        <div class="col-9">
             <h1 class="display-3">{{ notebook.name }}</h1>
         </div>
-{#        <div class="col-2 grey-text">#}
-{#            <a href="" class="btn btn-outline-success" data-toggle="modal" data-target="#article_creation"> <i class="fa fa-plus display-3"></i></a>#}
-{#        </div>#}
+        <div class="col-3 grey-text">
+            <a href="" class="btn btn-lg btn-outline-success" data-toggle="collapse" data-target="#collapse"> <i class="fa fa-plus display-3"> Add Article</i></a>
+        </div>
         </div>
         <br><hr><br>
 
-            <p class="display-1"> <b>Author</b> - {{ notebook.owner.get_full_name }}</p>
+            <p class="display-5"> <b>Author</b> - {{ notebook.owner.get_full_name }}</p>
         <br><br>
         <div class="container">
             {{ notebook.description | safe }}
         </div>
 
 
-        <div class="container">
+        <div class="container-fluid">
             {% if articles %}
+<<<<<<< HEAD
                 <br>
               <ul class="messages">
 
                 {% for article in articles %}
 
 
-    <audio name="{{ article.id }}" preload= 'auto' controls  type="audio/mpeg"  src="{% static 'speech.mp3' %}"  ></audio>
 
-
-    <button  id='playfile' value = 'Play' name="{{ article.id }}" >Play</button>
 
 
                   <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -42,57 +43,39 @@
                 {% endfor %}
 
               </ul>
+=======
+                {% for article in articles %}
+
+                    <div>&nbsp;</div>
+
+                  <div class="card">
+                          <div class="card-header display-5">
+                            {{ article.title }}
+                          </div>
+                          <div class="card-body">
+                            {{ article.content | safe }}
+                          </div>
+                          <div class="card-footer text-muted">
+                              <div class="row justify-content-between">
+                                  <div class="col-3">
+                                      <i class="fa fa-edit"></i> {{ article.created_at }}
+                                  </div>
+                                  <div class="col-2">
+                                      <a href="#"> <i class="fa fa-fighter-jet"></i> Source </a>
+                                  </div>
+                              </div>
+                          </div>
+                    </div>
+
+                    <div>&nbsp;</div>
+                {% endfor %}
+>>>>>>> 88841740587ea2fab8d0b76afa23aa290fbc8fc6
             {% endif %}
 
         </div>
-        {% include 'article_creation.html' %}
 </div>
 
     {% endif %}
     </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-
-    <script>
-
-function submit(text,id){
-
-var playBtn = $("button[name="+id+"]");
-var audioBtn = $("audio[name="+id+"]");
-$.ajax({
-    url: "{% url 'getAudio' %}",
-    type: "post",
-    data: {
-        text : text,
-
-    },
-   beforeSend:function(){
-     playBtn.html("Wait...");
-   },
-    success: function(){
-    playBtn.html("Playing");
-            {% load static %}
-    audioBtn.src = "{% static 'speech.mp3' %}";
-    audioBtn[0].play();
-
-    },
-    error:function(){
-        alert("Error occured");
-    }
-});
-
-}
-
-    </script>
-    <script>
-                {% for article in articles %}
-    $('button[name ="{{ article.id }}"]').click(function(event){
-        event.preventDefault();
-        console.log("submitted!")
-        var text = $('strong[name ="{{ article.id }}"]').html()
-        submit(text,{{ article.id }});
-    });
-    {% endfor %}
-    </script>
 
 {% endblock %}

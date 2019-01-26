@@ -21,7 +21,8 @@ from django.http import JsonResponse
 
 import random
 import os
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="../scribe-fdf862bebb2f.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../scribe-fdf862bebb2f.json"
+
 
 def text2speech(text):
     """Synthesizes speech from the input string of text."""
@@ -45,39 +46,9 @@ def text2speech(text):
     return response.audio_content
 
 
-@csrf_exempt
-def getAudio(request):
-   if request.method == 'POST':
+<<<<<<< HEAD
 
-        from gtts import gTTS
-
-        # This module is imported so that we can
-        # play the converted audio
-        import os
-
-        # The text that you want to convert to audio
-        mytext = strip_tags(request.POST.get('text'))
-        print(mytext)
-        # Language in which you want to convert
-        language = 'en'
-
-        # Passing the text and language to the engine,
-        # here we have marked slow=False. Which tells
-        # the module that the converted audio should
-        # have a high speed
-        myobj = gTTS(text=mytext, lang=language, slow=False)
-
-        # Saving the converted audio in a mp3 file named
-        # welcome
-        myobj.save("scribe/assets/speech.mp3")
-        speech = 'scribe/assets/speech.mp3'
-        # Playing the converted file
-        f = open(speech, "rb")
-        response = HttpResponse(f.read())
-        response['Content-Type'] = 'audio/mp3'
-        response['Content-Length'] = os.path.getsize(speech)
-        nothing ={"nothing":"nothing"}
-        return JsonResponse(nothing)
+>>>>>>> 88841740587ea2fab8d0b76afa23aa290fbc8fc6
 
 
 def getlist(request, uid):
@@ -101,7 +72,10 @@ def getlist(request, uid):
 def home(request):
     context = {'title': 'Home'}
     print(context)
-    return render(request, 'index.html', context=context)
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    else:
+        return render(request, 'index.html', context=context)
 
 
 def create_notebook_id(size):
@@ -138,16 +112,17 @@ def create_notebook(request):
             print('Notebook - {} created'.format(name))
             book.created_at = book.updated_at = now()
             book.save()
-            context = {'title': 'Create', 'messages': ['Notebook created successfully'], 'form': form}
+            context = {'title': 'Create', 'messages': ['Notebook created successfully'], 'form': form,
+                       "create_page": "active"}
             return render(request, 'notebook_creation_form.html', context=context)
 
         except Exception as e:
             print(e)
-            context = {'title': 'Create', 'messages': [e], 'form': form}
+            context = {'title': 'Create', 'messages': [e], 'form': form, "create_page": "active"}
             return render(request, 'notebook_creation_form.html', context=context)
 
     else:
-        context = {'title': 'Create', 'form': form}
+        context = {'title': 'Create', 'form': form, "create_page": "active"}
         return render(request, 'notebook_creation_form.html', context=context)
 
 
@@ -163,8 +138,9 @@ def view_notebook(request, uid):
             article = Article.objects.create(notebook=notebook, title=title, content=content)
             # print('Article - {} created'.format(content[:100]))
 
-            article.created_at = now()
+            article.created_at = notebook.updated_at = now()
             article.save()
+            notebook.save()
             return redirect('view_notebook', uid=uid)
 
         except Exception as e:
