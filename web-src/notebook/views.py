@@ -161,9 +161,10 @@ def view_notebook(request, uid):
         notebook = NoteBook.objects.get(id=uid)
         title = request.POST.get('title')
         content = request.POST.get('content')
+        source = request.POST.get('source')
         print(content)
         try:
-            article = Article.objects.create(notebook=notebook, title=title, content=content)
+            article = Article.objects.create(notebook=notebook, title=title, content=content,source=source)
             # print('Article - {} created'.format(content[:100]))
 
             article.created_at = notebook.updated_at = now()
