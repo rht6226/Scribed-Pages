@@ -1,3 +1,4 @@
+# Created by github
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -372,6 +373,6 @@ pip-selfcheck.json
 
 ### Static Files and Media
 web-src/assets/
-media/
+web-src/media
 
 # End of https://www.gitignore.io/api/django,intellij,virtualenv,sublimetext,visualstudiocode

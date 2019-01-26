@@ -25,7 +25,7 @@ class User(AbstractUser):
         if self.profile_image:
             return self.profile_image.url
         else:
-            return r"/assets/user.png"
+            return r"https://res.cloudinary.com/dz2bsme0a/image/upload/v1548468434/user.png"
 
     def __str__(self):
         return self.username

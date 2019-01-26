@@ -10,11 +10,15 @@ Written_by - Rohit Anand
 '''
 
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_list_or_404, HttpResponse
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.utils.html import strip_tags
 from django.contrib import messages
 from django.core.validators import validate_email
+from django.contrib.auth.decorators import login_required
+from notebook.models import NoteBook
+
+User = get_user_model()
 
 
 def login_user(request):
@@ -39,6 +43,7 @@ def login_user(request):
         return redirect('home')
 
 
+@login_required(login_url='/accounts/login/')
 def logout_user(request):
     logout(request)
     response = redirect('home')
@@ -115,5 +120,49 @@ def signup(request):
             except Exception as e:
                 print(e)
                 return render(request, 'index.html', context={'title': 'Home', 'messages': e})
+
+
+@login_required(login_url='/accounts/login/')
+def dashboard(request):
+    if request.method is not 'POST':
+        user = request.user
+
+        try:
+            notes = get_list_or_404(NoteBook, owner=user)
+            context = {'title': 'Dashboard', 'notebooks': notes, 'user': user}
+
+        except:
+            context = {'title': 'Dashboard', 'notebooks': None, 'user': user,
+                       'error': 'You Do not have any notebooks! Create one'}
+
+        return render(request, 'dashboard.html', context=context)
+
+
+@login_required(login_url='/accounts/login/')
+def edit_profile(request):
+    user = request.user
+    user_instance = User.objects.get(username=user.username)
+    context = {'title': 'Edit Profile', 'user': user_instance}
+
+    if request.method == 'POST':
+
+        if request.FILES.get('image'):
+            user_instance.profile_image = request.FILES.get('image')
+            user_instance.save()
+            return redirect('edit_profile')
+
+        else:
+            user_instance.first_name = request.POST.get('first_name')
+            user_instance.last_name = request.POST.get('last_name')
+            user_instance.bio = request.POST.get('bio') if request.POST.get('bio') else user.bio
+            user_instance.save()
+            return redirect('edit_profile')
+
+        # else:
+        #     return HttpResponse('Sorry! Something went wrong.')
+
+    else:
+        return render(request, 'edit_profile.html', context=context)
+
 
 
