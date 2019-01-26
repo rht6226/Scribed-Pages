@@ -166,3 +166,32 @@ def view_notebook(request, uid):
                    'article_form': form} if articles is not None else {
             'title': notebook.name, 'notebook': notebook, 'article_form': form}
         return render(request, 'notebook.html', context=context)
+
+
+@login_required(login_url='/accounts/login/')
+def edit_notebook(request, uid):
+    if request.method == 'POST':
+        try:
+            notebook = get_object_or_404(NoteBook, id=uid, owner=request.user)
+            notebook.name = request.POST.get('name')
+            notebook.description = request.POST.get('description')
+            notebook.updated_at = now()
+            notebook.save()
+        except Exception as e:
+            return HttpResponse(e)
+        return redirect('view_notebook', uid=notebook.id)
+
+    else:
+        try:
+            notebook = get_object_or_404(NoteBook, id=uid, owner=request.user)
+        except Exception as e:
+            context = {'title': '404', 'messages': [e, 'OR, You do not own this notebook!']}
+            return render(request, 'notebook.html', context=context)
+
+        form = NotebookChangeForm(instance=notebook)
+
+        context = {'title': notebook.name, 'notebook': notebook, 'form': form}
+        return render(request, 'edit_notebook.html', context=context)
+
+
+
