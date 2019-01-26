@@ -12,7 +12,7 @@ from django.utils.crypto import get_random_string
 from django.utils.html import strip_tags
 from django.utils.timezone import now
 from .models import NoteBook, Article, User
-from .forms import NotebookCreationForm, NotebookChangeForm, ArticleCreationForm
+from .forms import NotebookCreationForm, NotebookChangeForm, ArticleCreationForm, ArticleChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -220,4 +220,42 @@ def edit_notebook(request, uid):
 
         context = {'title': notebook.name, 'notebook': notebook, 'form': form}
         return render(request, 'edit_notebook.html', context=context)
+
+
+@login_required(login_url='/accounts/login/')
+def edit_article(request, uid):
+    error = []
+    try:
+        article = get_object_or_404(Article, id=uid)
+        notebook = article.notebook
+        form = ArticleChangeForm(instance=article)
+        if notebook.owner == request.user:
+            if request.method == 'POST':
+                article.title = request.POST.get('title')
+                article.content = request.POST.get('content')
+                article.created_at = notebook.updated_at = now()
+                notebook.save()
+                article.save()
+                return redirect('edit_article', uid=article.id)
+
+            else:
+                try:
+                    article = get_object_or_404(Article, id=uid)
+                except Exception as e:
+                    context = {'title': '404', 'messages': [e, 'OR, You do not own this notebook!']}
+                    return render(request, 'edit_article.html', context=context)
+
+                context = {'title': notebook.name, 'notebook': notebook, 'form': form}
+                return render(request, 'edit_article.html', context=context)
+
+        else:
+            error.append('You Do not Own this notebook')
+            context = {'title': article.title, 'article': article, 'form': form, 'messages': error}
+            return render(request, 'edit_article.html', context=context)
+
+    except Exception as e:
+        error.append(e)
+    return render(request, 'edit_article.html', context={'title': article.title, 'article': article, 'form': form,
+                                                         'messages': error})
+
 

@@ -32,12 +32,16 @@
 
                   <div class="card">
                           <div class="card-header display-5">
-                            {{ article.title }}
-
+                              <div class="row">
+                                <div class="col-4">{{ article.title }}</div>
+                                <div class="col-6">
                                   <audio name="{{ article.id }}" preload= 'auto' controls  type="audio/mpeg"  src="{% static 'speech.mp3' %}"  ></audio>
-
-
-                                           <button  id='playfile' value = 'Play' name="{{ article.id }}" >Play</button>
+                                   <button  id='playfile' value='Play' class="btn btn-sm btn-info" name="{{ article.id }}" >Play</button>
+                                </div>
+                              <div class="col-2">
+                                  <a href="{% url 'edit_article' uid=article.id %}"><i class="fa fa-edit"></i> Edit </a>
+                              </div>
+                              </div>
                           </div>
                           <div class="card-body" style="background-color:#41f4bb" name="{{ article.id }}">
                             {{ article.content | safe }}
