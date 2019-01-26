@@ -1,4 +1,4 @@
-'''
+"""
 
 home -
     The function to render the homepage of the website.
@@ -7,7 +7,7 @@ home -
     This page will also be used for providing information to the user and helping them in installing the extension.
 
 Written_by - Rohit Anand
-'''
+"""
 
 from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404, HttpResponse
 from django.utils.crypto import get_random_string
