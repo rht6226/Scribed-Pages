@@ -9,7 +9,6 @@ home -
 Written_by - Rohit Anand
 '''
 
-
 from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404, HttpResponse
 from django.utils.crypto import get_random_string
 from django.utils.html import strip_tags
@@ -17,8 +16,28 @@ from django.utils.timezone import now
 from .models import NoteBook, Article, User
 from .forms import NotebookCreationForm, NotebookChangeForm, ArticleCreationForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 import random
+
+
+def getlist(request, uid):
+    id = []
+    name = []
+    user = User.objects.get(username=uid)
+
+    try:
+        notes = get_list_or_404(NoteBook, owner=user)
+        for item in notes:
+            id.append(item.id)
+            name.append(item.name)
+        x = {"id": id, "name": name}
+        return JsonResponse(x)
+
+    except:
+        x = {"id": "id", "name": "name"}
+        return JsonResponse(x)
 
 
 def home(request):
@@ -44,7 +63,6 @@ def create_notebook_id(size):
 
 @login_required(login_url='/accounts/login/')
 def create_notebook(request):
-
     form = NotebookCreationForm()
 
     if request.method == 'POST':
@@ -75,20 +93,18 @@ def create_notebook(request):
         return render(request, 'notebook_creation_form.html', context=context)
 
 
-@login_required
-def view_notebook(request, uid):
-    try:
-        notebook = get_object_or_404(NoteBook, id=uid, owner=request.user)
-    except Exception as e:
-        context = {'title': '404', 'messages': [e, 'OR, You do not own this notebook!']}
 
+@csrf_exempt
+def view_notebook(request, uid):
     if request.method == 'POST':
 
+        notebook = NoteBook.objects.get(id=uid)
         title = request.POST.get('title')
         content = request.POST.get('content')
+        print(content)
         try:
             article = Article.objects.create(notebook=notebook, title=title, content=content)
-            print('Article - {} created'.format(content[:100]))
+            # print('Article - {} created'.format(content[:100]))
 
             article.created_at = now()
             article.save()
@@ -99,6 +115,13 @@ def view_notebook(request, uid):
             return render(request, 'notebook.html', context=context)
 
     else:
+        # def get(self, request, uid):
+        try:
+            notebook = get_object_or_404(NoteBook, id=uid, owner=request.user)
+        except Exception as e:
+            context = {'title': '404', 'messages': [e, 'OR, You do not own this notebook!']}
+            return render(request, 'notebook.html', context=context)
+
         try:
             articles = get_list_or_404(Article, notebook=notebook)
         except:
@@ -110,4 +133,3 @@ def view_notebook(request, uid):
                    'article_form': form} if articles is not None else {
             'title': notebook.name, 'notebook': notebook, 'article_form': form}
         return render(request, 'notebook.html', context=context)
-
