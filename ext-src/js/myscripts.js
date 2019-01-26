@@ -1,7 +1,27 @@
+//
+// document.addEventListener('select',function(){
+//    alert("Selected");
+// });
+
+chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT},
+   function(tabs){
+
+   localStorage.setItem('source', tabs[0].url);
+   }
+);
+
+var source = localStorage.getItem('source');
+
+localStorage.clear();
+
+// alert(localStorage.getItem('source'));
+// alert(source);
+
 
 //1(Getting names of Notebooks available)
 var ID;
 function getCookies() {
+
     chrome.cookies.get({url: 'http://127.0.0.1/', name: 'uid'}, function (cookie) {
         ID = cookie.value;
         $.ajax({
@@ -81,7 +101,6 @@ if (e.clipboardData && e.clipboardData.getData) {
 e.preventDefault();
 
 
-console.log("started");
 
 var text = document.getElementById('text').innerHTML;
 var title = document.getElementById('title').value;
@@ -94,14 +113,14 @@ $.ajax({
     type: "POST",
     data: {
         title:title,
+        source:source,
         content:text,
     },
     success: function(text){
         alert("Successfully submitted");
-
     },
     error:function(){
-        alert("Error occured");
+        // alert("Error occured");
     }
 });
 });
