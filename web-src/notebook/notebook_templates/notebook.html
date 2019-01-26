@@ -2,39 +2,57 @@
 
 {% block body %}
     <div class="container">
+        {% include 'article_creation.html' %}
+    </div>
+    <div class="container">
     {% if user.is_authenticated %}
         <br>
         <div class="row">
-        <div class="col-10">
+        <div class="col-9">
             <h1 class="display-3">{{ notebook.name }}</h1>
         </div>
-{#        <div class="col-2 grey-text">#}
-{#            <a href="" class="btn btn-outline-success" data-toggle="modal" data-target="#article_creation"> <i class="fa fa-plus display-3"></i></a>#}
-{#        </div>#}
+        <div class="col-3 grey-text">
+            <a href="" class="btn btn-lg btn-outline-success" data-toggle="collapse" data-target="#collapse"> <i class="fa fa-plus display-3"> Add Article</i></a>
+        </div>
         </div>
         <br><hr><br>
 
-            <p class="display-1"> <b>Author</b> - {{ notebook.owner.get_full_name }}</p>
+            <p class="display-5"> <b>Author</b> - {{ notebook.owner.get_full_name }}</p>
         <br><br>
         <div class="container">
             {{ notebook.description | safe }}
         </div>
 
 
-        <div class="container">
+        <div class="container-fluid">
             {% if articles %}
-                <br>
-              <ul class="messages">
                 {% for article in articles %}
-                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <h3>{{ article.title | safe }}</h3>
-                    <strong>{{ article.content | safe}}</strong>
-                   </div>
+
+                    <div>&nbsp;</div>
+
+                  <div class="card">
+                          <div class="card-header display-5">
+                            {{ article.title }}
+                          </div>
+                          <div class="card-body">
+                            {{ article.content | safe }}
+                          </div>
+                          <div class="card-footer text-muted">
+                              <div class="row justify-content-between">
+                                  <div class="col-3">
+                                      <i class="fa fa-edit"></i> {{ article.created_at }}
+                                  </div>
+                                  <div class="col-2">
+                                      <a href="#"> <i class="fa fa-fighter-jet"></i> Source </a>
+                                  </div>
+                              </div>
+                          </div>
+                    </div>
+
+                    <div>&nbsp;</div>
                 {% endfor %}
-              </ul>
             {% endif %}
         </div>
-        {% include 'article_creation.html' %}
 </div>
 
     {% endif %}

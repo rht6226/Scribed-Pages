@@ -1,19 +1,42 @@
-<div class="container">
-    <br><br>
-    <div class="container m-3 p-5 z-depth-2">
-        <br>
-        <h5 class="display-6">
-            Create New Article in {{ notebook.name }}
-        </h5>
-        <br>
+{#<div class="container">#}
+{#    <br><br>#}
+{#    <div class="container m-3 p-5 z-depth-2">#}
+{#        <br>#}
+{#        <h5 class="display-6">#}
+{#            Create New Article in {{ notebook.name }}#}
+{#        </h5>#}
+{#        <br>#}
+{#        <form method="post" action="{% url 'view_notebook' uid=notebook.id %}">#}
+{#            {% csrf_token %}#}
+{#            {{ article_form.media }}#}
+{#            {{ article_form.as_p }}#}
+{#            <p><button type="submit" class="btn btn-md btn-outline-success">Submit</button></p>#}
+{#        </form>#}
+{#    </div>#}
+{#</div>#}
+
+<div>&nbsp;</div>
+<div class="card panel-collapse collapse in" id="collapse">
+      <div class="card-header display-5">
+        Create New Article in {{ notebook.name }}
+      </div>
+      <div class="card-body">
         <form method="post" action="{% url 'view_notebook' uid=notebook.id %}">
             {% csrf_token %}
             {{ article_form.media }}
             {{ article_form.as_p }}
             <p><button type="submit" class="btn btn-md btn-outline-success">Submit</button></p>
         </form>
-    </div>
+      </div>
+      <div class="card-footer text-muted">
+          <div class="row justify-content-between">
+              <div class="col-3">
+                  <i class="fa fa-edit"></i> {{ now }}
+              </div>
+          </div>
+      </div>
 </div>
+<div>&nbsp;</div>
 
 
 
