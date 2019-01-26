@@ -44,9 +44,39 @@ def text2speech(text):
     return response.audio_content
 
 
+@csrf_exempt
 def getAudio(request):
-    test_audio = text2speech("Hello hackers")
-    return render(request, 'index.html', {'audio_content': test_audio})
+   if request.method == 'POST':
+
+        from gtts import gTTS
+
+        # This module is imported so that we can
+        # play the converted audio
+        import os
+
+        # The text that you want to convert to audio
+        mytext = strip_tags(request.POST.get('text'))
+        print(mytext)
+        # Language in which you want to convert
+        language = 'en'
+
+        # Passing the text and language to the engine,
+        # here we have marked slow=False. Which tells
+        # the module that the converted audio should
+        # have a high speed
+        myobj = gTTS(text=mytext, lang=language, slow=False)
+
+        # Saving the converted audio in a mp3 file named
+        # welcome
+        myobj.save("scribe/assets/speech.mp3")
+        speech = 'scribe/assets/speech.mp3'
+        # Playing the converted file
+        f = open(speech, "rb")
+        response = HttpResponse(f.read())
+        response['Content-Type'] = 'audio/mp3'
+        response['Content-Length'] = os.path.getsize(speech)
+        nothing ={"nothing":"nothing"}
+        return JsonResponse(nothing)
 
 
 def getlist(request, uid):
