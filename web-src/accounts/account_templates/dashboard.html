@@ -1,15 +1,45 @@
-{% extends 'base.html' %}
+{% extends 'base_dashboard.html' %}
 {% load staticfiles %}
-{% if user.is_authenticated %}
-    {% block body %}
 
-        {{ user.get_full_name }}
-        <a href="{% url 'dashboard' %}"><img class = 'nav-img' src='{{user.image_url}}' width=200 height=200></a>
+{% block body %}
+    {% if user.is_authenticated %}
+            <div class="row">
+                {% for notebook in notebooks %}
+                    <div class="col-4">
+                        <!-- Card -->
+                        <div class="card">
+                          <!-- Card content -->
+                          <div class="card-body">
 
-        {% for notebook in notebooks %}
-            <div class="container row">
-                <a href="{% url 'view_notebook' uid=notebook.id %}">{{ notebook.name }}</a>
+                            <!-- Title -->
+                              <div class="row">
+                                  <div class="col-9">
+                                      <a href="{% url 'view_notebook' uid=notebook.id %}">
+                                        <h4 class="card-title">{{ notebook.name }}</h4>
+                                      </a>
+                                  </div>
+                                  <div class="col-3">
+                                    <a class="btn btn-outline btn-floating mdb-color lighten-3" href=""><i class="fa fa-edit"></i> Edit </a>
+                                  </div>
+                              </div>
+                            <hr>
+                            <!-- Text -->
+                            <p class="card-text">{{ notebook.description | striptags | slice:"180 "}}</p>
+
+                          </div>
+
+                          <!-- Card footer -->
+                          <div class="rounded-bottom mdb-color lighten-3 text-center pt-3">
+                            <ul class="list-unstyled list-inline font-small">
+                              <li class="list-inline-item pr-2 white-text"><b class="text-muted">Created</b>- {{ notebook.created_at }}</li>
+                              <li class="list-inline-item pr-2 white-text"><b class="text-muted">Updated</b>- {{ notebook.updated_at }}</li>
+                            </ul>
+                          </div>
+
+                        </div>
+                        <!-- Card -->
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-    {% endblock %}
-{% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,137 @@
+{% load staticfiles %}
+<html>
+<head>
+    <title>Dashboard | {{ user.get_full_name }}</title>
+    {% include 'base_meta.html' %}
+
+
+    {% include 'base_css.html' %}
+    <!-- Animation library for notifications   -->
+    <link href="{% static  'css/animate.min.css' %}" rel="stylesheet"/>
+
+    <!--  Paper Dashboard core CSS    -->
+    <link href="{% static  'css/paper-dashboard.css' %}" rel="stylesheet"/>
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="{% static  'css/demo.css' %}" rel="stylesheet" />
+
+    <!--  Fonts and icons     -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+    <link href="{% static  'css/themify-icons.css'%}" rel="stylesheet">
+</head>
+
+<body>
+    {% if user.is_authenticated %}
+            <div class="wrapper">
+            <div class="sidebar" data-background-color="white" data-active-color="danger">
+
+            <!--
+                Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+                Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+            -->
+
+                <div class="sidebar-wrapper">
+                    <div class="logo">
+                        <a href="{% url 'home' %}" class="simple-text">
+                            <i class="fa fa-home"></i>  Notebook
+                        </a>
+                    </div>
+
+                    <ul class="nav">
+                        <li class="{{ home_page }}">
+                            <a href="{% url 'dashboard' %}">
+                                <div class="row justify-content-end">
+                                    <div class="col-3">
+                                        <i class="fa fa-columns"></i>
+                                    </div>
+                                    <div class="col-8">
+                                        Dashboard
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="{{ edit_page }}">
+                            <a href="{% url 'edit_profile' %}">
+                                <div class="row justify-content-end">
+                                    <div class="col-3">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <div class="col-8">
+                                        Edit User
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="{{ create_page }}">
+                            <a href="{% url 'create_notebook' %}">
+                                <div class="row justify-content-end">
+                                    <div class="col-3">
+                                        <i class="fa fa-plus"></i>
+                                    </div>
+                                    <div class="col-8">
+                                        Create Notebook
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-panel">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar bar1"></span>
+                                <span class="icon-bar bar2"></span>
+                                <span class="icon-bar bar3"></span>
+                            </button>
+                            <a class="navbar-brand" href="#">{{ user.get_full_name }}</a>
+                        </div>
+                        <div class="nav navbar-nav navbar-toggler-right">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                <a href="{% url 'logout' %}" class="nav-item">
+                                    <i class="fa fa-lock"></i> Sign Out
+                                </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            {% block body %}
+                            
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+</body>
+
+    {% include 'base_script.html' %}
+
+	<!--  Checkbox, Radio & Switch Plugins -->
+	<script src="{% static 'js/bootstrap-checkbox-radio.js' %}"></script>
+
+
+    <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
+	<script src="{% static 'js/paper-dashboard.js' %}"></script>
+
+	<script src="{% static 'js/demo.js' %}"></script>
+
+</html>
+
