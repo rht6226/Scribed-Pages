@@ -10,7 +10,7 @@
         </h5>
         <hr>
         <br>
-        <form method="post" action="{% url 'new_notebook' %}">
+        <form method="post" action="{% url 'edit_article' uid=article.id %}">
             {% csrf_token %}
             {{ form.media }}
             {{ form.as_p }}

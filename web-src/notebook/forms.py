@@ -44,5 +44,4 @@ class ArticleChangeForm(forms.ModelForm):
         fields = {
             'title',
             'content',
-            'source',
         }
