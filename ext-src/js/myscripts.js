@@ -65,6 +65,10 @@ let click2login = document.getElementById('login');
    chrome.tabs.create({url:"http://127.0.0.1:8000/"});
   };
 
+  let click2create= document.getElementById('new');
+  click2create.onclick = function (element) {
+   chrome.tabs.create({url:"http://127.0.0.1:8000/"});
+  };
   //3(changes UI according to status)
 chrome.cookies.get({url:'http://127.0.0.1/', name:'sessionid'}, function(cookie) {
 

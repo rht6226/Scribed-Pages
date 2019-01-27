@@ -9,3 +9,4 @@ gTTS
 sox
 google_speech
 WeasyPrint
+aylien-apiclient
