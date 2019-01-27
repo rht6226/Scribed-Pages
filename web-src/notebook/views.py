@@ -19,11 +19,20 @@ from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.template import loader, RequestContext
-
+from aylienapiclient import textapi
 from weasyprint import HTML
 import random
 import os
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../scribe-fdf862bebb2f.json"
+client = textapi.Client("6c8e9997", "6627eacf9816f934272df0a0746398e8")
+
+
+def gettags(request):
+    text = request.GET.get('text')
+    sentiment = client.ClassifyByTaxonomy({'text': text,'taxonomy':'iptc-subjectcode'})
+    print(sentiment)
+    return JsonResponse(sentiment)
+
 
 
 def text2speech(text):
@@ -271,3 +280,25 @@ def html_to_pdf_view(request, uid):
     response = HttpResponse(content_type='application/pdf')
     HTML(string=html).write_pdf(response)
     return response
+
+
+def search(request,uid):
+    if request.method == 'GET':
+        name = request.GET.get('search')
+        try:
+            notebook = get_object_or_404(NoteBook, id=uid, owner=request.user)
+        except Exception as e:
+            context = {'title': '404', 'messages': [e, 'OR, You do not own this notebook!']}
+            return render(request, 'notebook.html', context=context)
+
+        try:
+            articles = Article.objects.filter(notebook=notebook).filter(title__icontains=name)
+        except:
+            articles = None
+
+        form = ArticleCreationForm()
+
+        context = {'title': notebook.name, 'notebook': notebook, 'articles': articles,
+                   'article_form': form} if articles is not None else {
+            'title': notebook.name, 'notebook': notebook, 'article_form': form}
+        return render(request, 'notebook.html', context=context)

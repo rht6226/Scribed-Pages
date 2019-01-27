@@ -5,6 +5,15 @@
         {% include 'article_creation.html' %}
     </div>
     <div class="container">
+<div class="col-3">
+
+     <form name="myform" method="GET" action="{% url 'search' uid=notebook.id %}">
+
+         <input type="text" name="search" placeholder="Search" />
+
+     </form>
+</div>
+
     {% if user.is_authenticated %}
         <br>
         <div class="row">
@@ -39,9 +48,9 @@
                                 <div class="col-4">{{ article.title }}</div>
                                 <div class="col-6">
                                   <audio name="{{ article.id }}" preload= 'auto' controls  type="audio/mpeg"  src="{% static 'speech.mp3' %}"  ></audio>
-                                   <button  id='playfile' value='Play' class="btn btn-sm btn-info" name="{{ article.id }}" >Play</button>
+                                   <button  id='playfile' value='Play' class="btn btn-sm btn-info" name="{{ article.id }}" >Convert</button>
                                 </div>
-                              <div class="col-2">
+                              <div class="col-2" style="float: right; text-align: center;">
                                   <a href="{% url 'edit_article' uid=article.id %}"><i class="fa fa-edit"></i> Edit </a>
                               </div>
                               </div>
@@ -57,6 +66,7 @@
                                   <div class="col-2">
                                       <a onclick="window.open('{{ article.source}}', '_blank')"> <i class="fa fa-fighter-jet"></i> Source </a>
                                   </div>
+                                   <div class="col-7"><a class="btn btn-sm " name="{{ article.id }}">Show Tags</a></div>
                               </div>
                           </div>
                     </div>
@@ -76,9 +86,24 @@
 
 
     <script>
+        function getTags(text,id) {
+         $.ajax({
+    url: "{% url 'gettags' %}",
+    type: "get",
+    data: {
+        text : text,
+     },
+   beforeSend:function(){
+    },
+    success: function(data){
+    alert(data.categories[0].label
+    );
+     },
+});
+     }
+
 
 function submit(text,id){
-alert(text);
 var playBtn = $("button[name="+id+"]");
 var audioBtn = $("audio[name="+id+"]");
 $.ajax({
@@ -93,13 +118,12 @@ $.ajax({
    },
     success: function(){
     playBtn.html("Playing");
-            {% load static %}
-    audioBtn.src = "{% static 'speech.mp3' %}";
+      location.reload();
     audioBtn[0].play();
 
     },
     error:function(){
-        alert("Error occured");
+        alert("Sucessfully Submitted");
     }
 });
 
@@ -115,6 +139,13 @@ $.ajax({
         var text = $('div[name ="{{ article.id }}"]').html()
         submit(text,{{ article.id }});
     });
+
+      $('a[name="{{ article.id }}"]').click(function(event){
+        event.preventDefault();
+        console.log("retrieving");
+        var text =  $('div[name ="{{ article.id }}"]').html()
+                getTags(text,{{ article.id }});
+                     });
     {% endfor %}
     </script>
 
